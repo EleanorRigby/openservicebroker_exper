@@ -1,0 +1,6 @@
+apiVersion: servicecatalog.k8s.io/v1alpha1
+kind: Broker
+metadata:
+  name: osb-exper-broker
+spec:
+  url: http://osb-osbexper-jenkins-broker.osb.svc.cluster.local
