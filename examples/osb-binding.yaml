@@ -1,0 +1,9 @@
+apiVersion: servicecatalog.k8s.io/v1alpha1
+kind: Binding
+metadata:
+  name: jenkins-binding
+  namespace: jenkins-broker
+spec:
+  instanceRef:
+    name: freshly-minted-jenkins
+  secretName: my-jenkins-secret

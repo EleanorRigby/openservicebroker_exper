@@ -1,8 +1,8 @@
 apiVersion: servicecatalog.k8s.io/v1alpha1
 kind: Instance
 metadata:
-  name: osb-instance
-  namespace: osb
+  name: freshly-minted-jenkins
+  namespace: jenkins-broker
 spec:
   serviceClassName: jenkins-service
   planName: default

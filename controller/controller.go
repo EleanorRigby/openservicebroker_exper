@@ -32,21 +32,14 @@ func (e errNoSuchInstance) Error() string {
 }
 
 type jenkinsServiceInstance struct {
-	//Name       string
-	//Credential *brokerapi.Credential
 }
 
 type jenkinsController struct {
-	//rwMutex     sync.RWMutex
-	//instanceMap map[string]*jenkinsServiceInstance
 }
 
-// CreateController creates an instance of a User Provided service broker controller.
+// CreateController creates an instance of a service broker controller.
 func CreateController() controller.Controller {
-	//var instanceMap = make(map[string]*jenkinsServiceInstance)
 	return &jenkinsController{}
-	//instanceMap: instanceMap,
-	//}
 }
 
 func (c *jenkinsController) Catalog() (*brokerapi.Catalog, error) {
@@ -73,36 +66,12 @@ func (c *jenkinsController) CreateServiceInstance(
 	id string,
 	req *brokerapi.CreateServiceInstanceRequest,
 ) (*brokerapi.CreateServiceInstanceResponse, error) {
-	/*
-		credString, ok := req.Parameters["credentials"]
-		c.rwMutex.Lock()
-		defer c.rwMutex.Unlock()
-		if ok {
-			jsonCred, err := json.Marshal(credString)
-			if err != nil {
-				glog.Errorf("Failed to marshal credentials: %v", err)
-				return nil, err
-			}
-			var cred brokerapi.Credential
-			err = json.Unmarshal(jsonCred, &cred)
-
-			c.instanceMap[id] = &jenkinsServiceInstance{
-				Name:       id,
-				Credential: &cred,
-			}
-		} else {
-			c.instanceMap[id] = &jenkinsServiceInstance{
-				Name: id,
-				Credential: &brokerapi.Credential{
-					"special-key-1": "special-value-1",
-					"special-key-2": "special-value-2",
-				},
-			}
-		}*/
+	//Based on Service ID we can invoke specific chart installation.
 	if err := client.Install(releaseName(id), id); err != nil {
 		return nil, err
 	}
 	glog.Infof("Created Jenkins Service Instance:\n\n")
+	//glog.Info("Printing request %v", *req)
 	return &brokerapi.CreateServiceInstanceResponse{}, nil
 }
 
@@ -111,14 +80,7 @@ func (c *jenkinsController) GetServiceInstance(id string) (string, error) {
 }
 
 func (c *jenkinsController) RemoveServiceInstance(id string) (*brokerapi.DeleteServiceInstanceResponse, error) {
-	/*c.rwMutex.Lock()
-	defer c.rwMutex.Unlock()
-	_, ok := c.instanceMap[id]
-	if ok {
-		delete(c.instanceMap, id)
-		return &brokerapi.DeleteServiceInstanceResponse{}, nil
-	}
-	*/
+
 	if err := client.Delete(releaseName(id)); err != nil {
 		return nil, err
 	}
@@ -126,7 +88,6 @@ func (c *jenkinsController) RemoveServiceInstance(id string) (*brokerapi.DeleteS
 	return &brokerapi.DeleteServiceInstanceResponse{}, nil
 }
 
-//This might not work for now.
 func (c *jenkinsController) Bind(
 	instanceID,
 	bindingID string,
